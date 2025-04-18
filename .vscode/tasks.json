@@ -1,0 +1,66 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "configure with CMake",
+      "type": "shell",
+      "command": "cmake",
+      "args": [
+        "-S", "C:/Users/chris/Documents/Chess-Cpp",
+        "-B", "C:/Users/chris/Documents/Chess-Cpp/build",
+        "-DCMAKE_BUILD_TYPE=Debug"
+      ],
+      "options": {
+        "shell": {
+          "executable": "C:/Program Files/Git/bin/bash.exe",
+          "args": ["-c"]
+        }
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "build with CMake",
+      "type": "shell",
+      "command": "cmake",
+      "args": [
+        "--build", "C:/Users/chris/Documents/Chess-Cpp/build",
+        "--config", "Debug"
+      ],
+      "options": {
+        "shell": {
+          "executable": "C:/Program Files/Git/bin/bash.exe",
+          "args": ["-c"]
+        }
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      "label": "clean with CMake",
+      "type": "shell",
+      "command": "cmake",
+      "args": [
+        "--build", "C:/Users/chris/Documents/Chess-Cpp/build",
+        "--target", "clean"
+      ],
+      "options": {
+        "shell": {
+          "executable": "C:/Program Files/Git/bin/bash.exe",
+          "args": ["-c"]
+        }
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      }
+    }
+  ]
+}

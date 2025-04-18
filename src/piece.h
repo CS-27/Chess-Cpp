@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <iostream>
 
 class Piece {
     protected:
@@ -31,6 +32,10 @@ class Piece {
         void printPiece();
 
         virtual bool validMove(std::vector<int>, std::vector<std::vector<std::shared_ptr<Piece>>>&) = 0;
+
+        /*void print() {
+            desc = 
+        }*/
 };
 
 #endif
