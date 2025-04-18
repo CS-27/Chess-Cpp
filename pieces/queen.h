@@ -1,0 +1,23 @@
+#ifndef QUEEN_H
+#define QUEEN_H
+
+#include "../piece.h"
+#include <string>
+#include <memory>
+#include "rook.h"
+#include "bishop.h"
+
+class Queen : public Piece {
+    public:
+        Queen(char c, std::vector<int>& v) : 
+            Piece(c, "Queen", v.at(0), v.at(1)) {};
+
+        virtual bool validMove(std::vector<int> v, std::vector<std::vector<std::shared_ptr<Piece>>>& board) override {
+            auto posVec = getCoords();
+            auto tempBishop = std::make_shared<Bishop>(colour, posVec);
+            auto tempRook = std::make_shared<Rook>(colour, posVec);
+            return (tempBishop->validMove(v, board) || tempRook->validMove(v, board));
+        }
+};
+
+#endif
