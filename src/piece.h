@@ -5,6 +5,8 @@
 #include <vector>
 #include <memory>
 #include <iostream>
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 
 class Piece {
     protected:
@@ -12,10 +14,12 @@ class Piece {
         std::string name;
         int row;
         int col;
+        sf::Texture tx;
+        sf::Sprite img;
     
     public:
-        Piece(char c, std::string n, int rw, int cl) : 
-            colour(c), name(n), row(rw), col(cl) {};
+        Piece(char c, std::string n, int rw, int cl, sf::Texture t = {}) : 
+            colour(c), name(n), row(rw), col(cl), tx(t), img(tx) {display();};
 
         const char& getColour() {
             return colour;
@@ -25,6 +29,27 @@ class Piece {
         }
         std::vector<int> getCoords() {
             return std::vector<int>{row, col};
+        }
+
+        const sf::Sprite& getSprite() {
+            return img;
+        }
+
+        void display() {
+
+            float desiredWidth = 80.f;
+            float desiredHeight = 80.f;
+
+            sf::Vector2u textureSize = tx.getSize();
+            float scaleX = desiredWidth / textureSize.x;
+            float scaleY = desiredHeight / textureSize.y;
+
+            img.setScale(sf::Vector2f(scaleX, scaleY));
+
+            float x = row * 80;
+            float y = col * 80;
+            img.setPosition(sf::Vector2f(x, y));
+
         }
 
         void setCoords(std::vector<int>, std::vector<std::vector<std::shared_ptr<Piece>>>&);
