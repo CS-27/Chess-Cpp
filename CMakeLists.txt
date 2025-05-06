@@ -27,6 +27,6 @@ target_link_libraries(chessgame sfml-graphics sfml-window sfml-system)
 target_compile_options(chessgame PRIVATE -Wall -Wextra)
 
 # Windows: remove console window if not debugging
-if(WIN32)
+if(WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Release")
   target_link_options(chessgame PRIVATE -mwindows)
 endif()

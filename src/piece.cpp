@@ -4,6 +4,8 @@
 #include <iostream>
 #include <string>
 #include "pieces/empty.h"
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 
 void Piece::setCoords(std::vector<int> destPos, std::vector<std::vector<std::shared_ptr<Piece>>>& board) {
     std::vector<int> currPos = getCoords();

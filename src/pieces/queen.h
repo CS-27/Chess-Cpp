@@ -6,11 +6,12 @@
 #include <memory>
 #include "rook.h"
 #include "bishop.h"
+#include <SFML/Graphics/Texture.hpp>
 
 class Queen : public Piece {
     public:
-        Queen(char c, std::vector<int>& v) : 
-            Piece(c, "Queen", v.at(0), v.at(1)) {};
+        Queen(char c, std::vector<int>& v, sf::Texture t = {}) : 
+            Piece(c, "Queen", v.at(0), v.at(1), t) {};
 
         virtual bool validMove(std::vector<int> v, std::vector<std::vector<std::shared_ptr<Piece>>>& board) override {
             auto posVec = getCoords();

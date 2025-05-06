@@ -28,57 +28,65 @@ int main() {
     // Create a rectangle shape for the squares
     sf::RectangleShape square(sf::Vector2f({80.f, 80.f}));
 
-    // Loop until the window is closed
-    while (window.isOpen()) {
-        while (const std::optional event = window.pollEvent()) {
-            //if (event->is<sf::Event::Closed>() ||
-            //(event->is<sf::Event::KeyPressed>() &&
-            // event->getIf<sf::Event::KeyPressed>()->code == sf::Keyboard::Key::Escape)) {
-            //    window.close();
-            // }
-            
+    window.clear(sf::Color::White);
 
-            // Clear the window with a white background
-            window.clear(sf::Color::White);
+    // Loop to create an 8x8 grid (64 squares in total)
+    for (int row = 0; row < 8; ++row) {
+        for (int col = 0; col < 8; ++col) {
+            // Calculate position of each square
+            square.setPosition({col * 80.f, row * 80.f});
 
-            // Loop to create an 8x8 grid (64 squares in total)
-            for (int row = 0; row < 8; ++row) {
-                for (int col = 0; col < 8; ++col) {
-                    // Calculate position of each square
-                    square.setPosition({col * 80.f, row * 80.f});
-
-                    // Alternate colors based on row and column (like a chessboard)
-                    if ((row + col) % 2 == 0) {
-                        square.setFillColor(sf::Color::White);  // White square
-                    } else {
-                        square.setFillColor(sf::Color::Black);  // Black square
-                    }
-
-                    // Draw the square onto the window
-                    window.draw(square);
-                }
+            // Alternate colors based on row and column (like a chessboard)
+            if ((row + col) % 2 == 0) {
+                square.setFillColor(sf::Color::White);  // White square
+            } else {
+                square.setFillColor(sf::Color::Black);  // Black square
             }
 
-            // Display everything we've drawn
-            window.display();
-        
-
-            // Provide handlers for concrete types and fall back to generic handler
-            window.handleEvents(
-                [&](const sf::Event::Closed&) { window.close(); },
-                [&](const sf::Event::MouseButtonPressed& button) { 
-                    if (button.button == sf::Mouse::Button::Left){
-                        int x = button.position.y / 80;
-                        int y = button.position.x / 80;
-                        std::shared_ptr<Piece> piece = currBoard.at(x).at(y);
-                        std::cout << piece->getName();
-                        std::cout << "Vector: (" << button.position.x << ", " << button.position.y << ")\n";
-                    }
-                }
-            );
+            // Draw the square onto the window
+            window.draw(square);
         }
     }
+
+    // Display everything we've drawn
+    window.display();
+
+    for (int i = 0; i<8; i++) {
+        for (int j = 0; j<8; j++) {
+            auto tempPiece = currBoard[i][j];
+        }
+    }
+
+    bool piecesDrawn = false;
+
+    // Loop until the window is closed
+    while (window.isOpen()) {
+        if (!piecesDrawn) {
+            for(const auto& i : currBoard) {
+                for(const auto& j : i) {
+                    window.draw(j->getSprite());
+                    std::cout << "drawing pieces";
+                }
+            }
+            piecesDrawn = true;
+        }
+            // Provide handlers for concrete types and fall back to generic handler
+        window.handleEvents(
+            [&](const sf::Event::Closed&) { window.close(); },
+            [&](const sf::Event::MouseButtonPressed& button) { 
+                if (button.button == sf::Mouse::Button::Left){
+                    int x = button.position.y / 80;
+                    int y = button.position.x / 80;
+                    std::shared_ptr<Piece> piece = currBoard.at(x).at(y);
+                    std::cout << piece->getName();
+                    std::cout << "Vector: (" << button.position.x << ", " << button.position.y << ")\n";
+                }
+            }
+        );
+        window.display();
+    }
 }
+
 
 
     //board.printBoard(currBoard);
