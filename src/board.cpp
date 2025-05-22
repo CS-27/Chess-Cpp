@@ -20,77 +20,77 @@ Board::Board() : currBoard(std::vector(8, std::vector<std::shared_ptr<Piece>>(8)
             if (i == 0) {
                 if (j == 0 || j == 7) {
                     sf::Texture brT;
-                    brT.loadFromFile("pngs/br.png");
+                    brT.loadFromFile("assets/br.png");
                     auto bRook = std::make_shared<Rook>('b', v, brT);
                     currBoard[i][j] = bRook;
                 }
                 else if (j == 1 || j == 6) {
                     sf::Texture bnT;
-                    bnT.loadFromFile("pngs/bn.png");
+                    bnT.loadFromFile("assets/bn.png");
                     auto bKnight = std::make_shared<Knight>('b', v, bnT);
                     currBoard[i][j] = bKnight;
                 }
                 else if (j == 2 || j == 5) {
                     sf::Texture bbT;
-                    bbT.loadFromFile("pngs/bb.png");
+                    bbT.loadFromFile("assets/bb.png");
                     auto bBishop = std::make_shared<Bishop>('b', v, bbT);
                     currBoard[i][j] = bBishop;
                 }
                 else if (j == 3) {
                     sf::Texture bqT;
-                    bqT.loadFromFile("pngs/bq.png");
+                    bqT.loadFromFile("assets/bq.png");
                     auto bQueen = std::make_shared<Queen>('b', v, bqT);
                     currBoard[i][j] = bQueen;
                 }
                 else if (j == 4) {
                     sf::Texture bkT;
-                    bkT.loadFromFile("pngs/bk.png");
+                    bkT.loadFromFile("assets/bk.png");
                     auto bKing = std::make_shared<King>('b', v, bkT);
                     currBoard[i][j] = bKing;
                 }
             }
             else if (i == 1) {
                 sf::Texture bpT;
-                bpT.loadFromFile("pngs/bp.png");
+                bpT.loadFromFile("assets/bp.png");
                 auto bPawn = std::make_shared<Pawn>('b', v, bpT);
                 currBoard[i][j] = bPawn;
             }
             else if (i == 7) {
                 if (j == 0 || j == 7) {
                     sf::Texture wrT;
-                    wrT.loadFromFile("pngs/wr.png");
+                    wrT.loadFromFile("assets/wr.png");
                     auto wRook = std::make_shared<Rook>('w', v, wrT);
                     currBoard[i][j] = wRook;
                 }
                 else if (j == 1 || j == 6) {
                     sf::Texture wnT;
-                    wnT.loadFromFile("pngs/wn.png");
+                    wnT.loadFromFile("assets/wn.png");
                     auto wKnight = std::make_shared<Knight>('w', v, wnT);
                     currBoard[i][j] = wKnight;
                 }
                 else if (j == 2 || j == 5) {
                     sf::Texture wbT;
-                    wbT.loadFromFile("pngs/wb.png");
+                    wbT.loadFromFile("assets/wb.png");
                     auto wBishop = std::make_shared<Bishop>('w', v, wbT);
                     currBoard[i][j] = wBishop;
                 }
                 else if (j == 3) {
                     sf::Texture wqT;
-                    wqT.loadFromFile("pngs/wq.png");
+                    wqT.loadFromFile("assets/wq.png");
                     auto wQueen = std::make_shared<Queen>('w', v, wqT);
                     currBoard[i][j] = wQueen;
                 }
                 else if (j == 4) {
                     sf::Texture wkT;
-                    wkT.loadFromFile("pngs/wk.png");
+                    wkT.loadFromFile("assets/wk.png");
                     auto wKing = std::make_shared<King>('w', v, wkT);
                     currBoard[i][j] = wKing;
                 }
             }
             else if (i == 6) {
                 sf::Texture wpT;
-                wpT.loadFromFile("pngs/wp.png");
-                auto wPawn = std::make_shared<Pawn>('w', v);
+                wpT.loadFromFile("assets/wp.png");
+                auto wPawn = std::make_shared<Pawn>('w', v, wpT);
                 currBoard[i][j] = wPawn;
             }
             else {
