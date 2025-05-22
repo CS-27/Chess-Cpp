@@ -26,6 +26,12 @@ target_link_libraries(chessgame sfml-graphics sfml-window sfml-system)
 # Compiler flags
 target_compile_options(chessgame PRIVATE -Wall -Wextra)
 
+set_target_properties(chessgame PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_SOURCE_DIR}"
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_SOURCE_DIR}"
+    RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}"  # fallback for single-config generators
+)
+
 # Windows: remove console window if not debugging
 if(WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Release")
   target_link_options(chessgame PRIVATE -mwindows)

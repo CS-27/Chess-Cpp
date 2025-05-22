@@ -46,8 +46,8 @@ class Piece {
 
             img.setScale(sf::Vector2f(scaleX, scaleY));
 
-            float x = row * 80;
-            float y = col * 80;
+            float x = col * 80; //flipped due to board drawing logic
+            float y = row * 80; //same
             img.setPosition(sf::Vector2f(x, y));
 
         }
