@@ -2,7 +2,7 @@
 #include <memory>
 #include <vector>
 
-bool Pawn::validMove(std::vector<int> v, std::vector<std::vector<std::shared_ptr<Piece>>>& board) {
+bool Pawn::validMove(std::vector<int> v, std::vector<std::vector<std::unique_ptr<Piece>>>& board) {
 
         //get new and curr col/row and currcColour
         int newRow, newCol;

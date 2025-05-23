@@ -13,7 +13,13 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
-Board::Board() : currBoard(std::vector(8, std::vector<std::shared_ptr<Piece>>(8))) {
+Board::Board() {
+
+    currBoard.resize(8);  // 8 rows
+    for (auto& row : currBoard) {
+        row.resize(8);    // 8 columns per row
+    }
+
     for (int i = 0; i<8; i++) {
         for (int j = 0; j<8; j++) {
             auto v = std::vector<int>{i, j};
@@ -21,80 +27,68 @@ Board::Board() : currBoard(std::vector(8, std::vector<std::shared_ptr<Piece>>(8)
                 if (j == 0 || j == 7) {
                     sf::Texture brT;
                     brT.loadFromFile("assets/br.png");
-                    auto bRook = std::make_shared<Rook>('b', v, brT);
-                    currBoard[i][j] = bRook;
+                    currBoard[i][j] = std::make_unique<Rook>('b', v, brT);
                 }
                 else if (j == 1 || j == 6) {
                     sf::Texture bnT;
                     bnT.loadFromFile("assets/bn.png");
-                    auto bKnight = std::make_shared<Knight>('b', v, bnT);
-                    currBoard[i][j] = bKnight;
+                    currBoard[i][j] = std::make_unique<Knight>('b', v, bnT);
                 }
                 else if (j == 2 || j == 5) {
                     sf::Texture bbT;
                     bbT.loadFromFile("assets/bb.png");
-                    auto bBishop = std::make_shared<Bishop>('b', v, bbT);
-                    currBoard[i][j] = bBishop;
+                    currBoard[i][j] = std::make_unique<Bishop>('b', v, bbT);
                 }
                 else if (j == 3) {
                     sf::Texture bqT;
                     bqT.loadFromFile("assets/bq.png");
-                    auto bQueen = std::make_shared<Queen>('b', v, bqT);
-                    currBoard[i][j] = bQueen;
+                    currBoard[i][j] = std::make_unique<Queen>('b', v, bqT);
                 }
                 else if (j == 4) {
                     sf::Texture bkT;
                     bkT.loadFromFile("assets/bk.png");
-                    auto bKing = std::make_shared<King>('b', v, bkT);
-                    currBoard[i][j] = bKing;
+                    currBoard[i][j] = std::make_unique<King>('b', v, bkT);
                 }
             }
             else if (i == 1) {
                 sf::Texture bpT;
                 bpT.loadFromFile("assets/bp.png");
-                auto bPawn = std::make_shared<Pawn>('b', v, bpT);
-                currBoard[i][j] = bPawn;
+                currBoard[i][j] = std::make_unique<Pawn>('b', v, bpT);
             }
             else if (i == 7) {
                 if (j == 0 || j == 7) {
                     sf::Texture wrT;
                     wrT.loadFromFile("assets/wr.png");
-                    auto wRook = std::make_shared<Rook>('w', v, wrT);
-                    currBoard[i][j] = wRook;
+                    currBoard[i][j] = std::make_unique<Rook>('w', v, wrT);
                 }
                 else if (j == 1 || j == 6) {
                     sf::Texture wnT;
                     wnT.loadFromFile("assets/wn.png");
-                    auto wKnight = std::make_shared<Knight>('w', v, wnT);
-                    currBoard[i][j] = wKnight;
+                    currBoard[i][j] = std::make_unique<Knight>('w', v, wnT);
                 }
                 else if (j == 2 || j == 5) {
                     sf::Texture wbT;
                     wbT.loadFromFile("assets/wb.png");
-                    auto wBishop = std::make_shared<Bishop>('w', v, wbT);
-                    currBoard[i][j] = wBishop;
+                    currBoard[i][j] = std::make_unique<Bishop>('w', v, wbT);
                 }
                 else if (j == 3) {
                     sf::Texture wqT;
                     wqT.loadFromFile("assets/wq.png");
-                    auto wQueen = std::make_shared<Queen>('w', v, wqT);
-                    currBoard[i][j] = wQueen;
+                    currBoard[i][j] = std::make_unique<Queen>('w', v, wqT);
                 }
                 else if (j == 4) {
                     sf::Texture wkT;
                     wkT.loadFromFile("assets/wk.png");
-                    auto wKing = std::make_shared<King>('w', v, wkT);
-                    currBoard[i][j] = wKing;
+                    currBoard[i][j] = std::make_unique<King>('w', v, wkT);
                 }
             }
             else if (i == 6) {
                 sf::Texture wpT;
                 wpT.loadFromFile("assets/wp.png");
-                auto wPawn = std::make_shared<Pawn>('w', v, wpT);
-                currBoard[i][j] = wPawn;
+                currBoard[i][j] = std::make_unique<Pawn>('w', v, wpT);
             }
             else {
-                currBoard[i][j] = std::make_shared<Empty>(v);
+                currBoard[i][j] = std::make_unique<Empty>(v);
             }
         }
     }
@@ -108,7 +102,7 @@ Board::Board() : currBoard(std::vector(8, std::vector<std::shared_ptr<Piece>>(8)
     }*/
 }
 
-void Board::printBoard(std::vector<std::vector<std::shared_ptr<Piece>>>& board) const {
+void Board::printBoard(std::vector<std::vector<std::unique_ptr<Piece>>>& board) const {
     int buffer = 8;
     for (int i = 0; i < board.size(); i++) {
         std::cout << "{";

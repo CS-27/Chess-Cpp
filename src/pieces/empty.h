@@ -10,7 +10,7 @@ class Empty : public Piece {
         Empty(std::vector<int>& v) : 
             Piece('_', "None", v.at(0), v.at(1)) {};
 
-        virtual bool validMove(std::vector<int>, std::vector<std::vector<std::shared_ptr<Piece>>>&) override {
+        virtual bool validMove(std::vector<int>, std::vector<std::vector<std::unique_ptr<Piece>>>&) override {
             return false;
         }
 };

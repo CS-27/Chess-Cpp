@@ -2,7 +2,7 @@
 #include <vector>
 #include <memory>
 
-bool Bishop::validMove(std::vector<int> v, std::vector<std::vector<std::shared_ptr<Piece>>>& board) {
+bool Bishop::validMove(std::vector<int> v, std::vector<std::vector<std::unique_ptr<Piece>>>& board) {
 
     //get new and curr col/row and currcColour
     int newRow, newCol;
@@ -34,7 +34,7 @@ bool Bishop::validMove(std::vector<int> v, std::vector<std::vector<std::shared_p
         if (newCol < currCol) {
             for (int i = currRow-1; i > newRow; i--) {
                 for (int j = currCol-1; j > newCol; j--) {
-                    auto tempPiece = board.at(i).at(j);
+                    auto& tempPiece = board.at(i).at(j);
                     if (tempPiece->getName() != "None") {
                         return false;
                     }
@@ -44,7 +44,7 @@ bool Bishop::validMove(std::vector<int> v, std::vector<std::vector<std::shared_p
         else if (newCol > currCol) {
             for (int i = currRow-1; i > newRow; i--) {
                 for (int j = currCol+1; j < newCol; j++) {
-                    auto tempPiece = board.at(i).at(j);
+                    auto& tempPiece = board.at(i).at(j);
                     if (tempPiece->getName() != "None") {
                         return false;
                     }
@@ -57,7 +57,7 @@ bool Bishop::validMove(std::vector<int> v, std::vector<std::vector<std::shared_p
         if (newCol < currCol) {
             for (int i = currRow+1; i < newRow; i++) {
                 for (int j = currCol-1; j > newCol; j--) {
-                    auto tempPiece = board.at(i).at(j);
+                    auto& tempPiece = board.at(i).at(j);
                     if (tempPiece->getName() != "None") {
                         return false;
                     }
@@ -67,7 +67,7 @@ bool Bishop::validMove(std::vector<int> v, std::vector<std::vector<std::shared_p
         else if (newCol > currCol) {
             for (int i = currRow+1; i < newRow; i++) {
                 for (int j = currCol+1; j < newCol; j++) {
-                    auto tempPiece = board.at(i).at(j);
+                    auto& tempPiece = board.at(i).at(j);
                     if (tempPiece->getName() != "None") {
                         return false;
                     }
@@ -77,7 +77,7 @@ bool Bishop::validMove(std::vector<int> v, std::vector<std::vector<std::shared_p
     }
 
     //check destination tile
-    auto tempPiece = board.at(newRow).at(newCol);
+    auto& tempPiece = board.at(newRow).at(newCol);
     return (tempPiece->getName() == "None" || tempPiece->getColour() == oppColour) ?  true : false;
     
 };
