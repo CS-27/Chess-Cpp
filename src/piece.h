@@ -52,11 +52,11 @@ class Piece {
 
         }
 
-        void setCoords(std::vector<int>, std::vector<std::vector<std::shared_ptr<Piece>>>&);
+        void setCoords(std::vector<int>, std::vector<std::vector<std::unique_ptr<Piece>>>&);
 
         void printPiece();
 
-        virtual bool validMove(std::vector<int>, std::vector<std::vector<std::shared_ptr<Piece>>>&) = 0;
+        virtual bool validMove(std::vector<int>, std::vector<std::vector<std::unique_ptr<Piece>>>&) = 0;
 
         /*void print() {
             desc = 

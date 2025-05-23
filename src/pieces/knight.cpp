@@ -3,7 +3,7 @@
 #include <memory>
 #include <cmath>
 
-bool Knight::validMove(std::vector<int> v, std::vector<std::vector<std::shared_ptr<Piece>>>& board) {
+bool Knight::validMove(std::vector<int> v, std::vector<std::vector<std::unique_ptr<Piece>>>& board) {
 
     //get new and curr col/row and currcColour
     int newRow, newCol;
@@ -34,7 +34,7 @@ bool Knight::validMove(std::vector<int> v, std::vector<std::vector<std::shared_p
     else {return false;}
 
     //check destination tile
-    auto tempPiece = board.at(newRow).at(newCol);
+    auto& tempPiece = board.at(newRow).at(newCol);
     return (tempPiece->getName() == "None" || tempPiece->getColour() == oppColour) ?  true : false;
 
 }

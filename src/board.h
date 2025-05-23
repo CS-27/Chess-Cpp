@@ -14,14 +14,14 @@
 
 class Board {
     private:
-        std::vector<std::vector<std::shared_ptr<Piece>>> currBoard;
+        std::vector<std::vector<std::unique_ptr<Piece>>> currBoard;
     public:
         Board();
-        std::vector<std::vector<std::shared_ptr<Piece>>>& getCurrBoard() {
+        std::vector<std::vector<std::unique_ptr<Piece>>>& getCurrBoard() {
             return currBoard;
         }
 
-        void printBoard(std::vector<std::vector<std::shared_ptr<Piece>>>&) const;
+        void printBoard(std::vector<std::vector<std::unique_ptr<Piece>>>&) const;
         
 };
 

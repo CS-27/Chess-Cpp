@@ -2,7 +2,7 @@
 #include <vector>
 #include <memory>
 
-bool Rook::validMove(std::vector<int> v, std::vector<std::vector<std::shared_ptr<Piece>>>& board) {
+bool Rook::validMove(std::vector<int> v, std::vector<std::vector<std::unique_ptr<Piece>>>& board) {
     int newRow, newCol;
     newRow = v.at(0);
     newCol = v.at(1);
@@ -24,7 +24,7 @@ bool Rook::validMove(std::vector<int> v, std::vector<std::vector<std::shared_ptr
         else if (newCol < currCol) {
             for (int i = currCol-1; i >= newCol; i--) {
                 if (i == newCol) {
-                    auto tempPiece = board.at(currRow).at(i);
+                    auto& tempPiece = board.at(currRow).at(i);
                     return (tempPiece->getName() == "None" || tempPiece->getColour() == oppColour) ? true : false;
                 }
                 else if (board.at(currRow).at(i)->getName() != "None") {
@@ -35,7 +35,7 @@ bool Rook::validMove(std::vector<int> v, std::vector<std::vector<std::shared_ptr
         else if (newCol > currCol) {
             for (int i = currCol+1; i <= newCol; i++) {
                 if (i == newCol) {
-                    auto tempPiece = board.at(currRow).at(i);
+                    auto& tempPiece = board.at(currRow).at(i);
                     return (tempPiece->getName() == "None" || tempPiece->getColour() == oppColour) ? true : false;
                 }
                 else if (board.at(currRow).at(i)->getName() != "None") {
@@ -52,7 +52,7 @@ bool Rook::validMove(std::vector<int> v, std::vector<std::vector<std::shared_ptr
         else if (newRow < currRow) {
             for (int i = currRow-1; i >= newRow; i--) {
                 if (i == newRow) {
-                    auto tempPiece = board.at(i).at(currCol);
+                    auto& tempPiece = board.at(i).at(currCol);
                     return (tempPiece->getName() == "None" || tempPiece->getColour() == oppColour) ? true : false;
                 }
                 else if (board.at(i).at(currCol)->getName() != "None") {
@@ -63,7 +63,7 @@ bool Rook::validMove(std::vector<int> v, std::vector<std::vector<std::shared_ptr
         else if (newRow > currRow) {
             for (int i = currRow+1; i <= newRow; i++) {
                 if (i == newRow) {
-                    auto tempPiece = board.at(i).at(currCol);
+                    auto& tempPiece = board.at(i).at(currCol);
                     return (tempPiece->getName() == "None" || tempPiece->getColour() == oppColour) ? true : false;
                 }
                 else if (board.at(i).at(currCol)->getName() != "None") {

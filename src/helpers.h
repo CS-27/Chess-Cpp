@@ -11,7 +11,7 @@
 
 class Helpers {
     public:
-        /*static void updateBoard(std::shared_ptr<Piece>& p, std::vector<int> startPos, std::vector<int> endPos) {
+        /*static void updateBoard(std::unique_ptr<Piece>& p, std::vector<int> startPos, std::vector<int> endPos) {
         }*/
 
         static void toggleTurn(char& turn) {
@@ -19,9 +19,9 @@ class Helpers {
         }
 
         static bool isCheck(
-                std::shared_ptr<Piece>& p, 
+                std::unique_ptr<Piece>& p, 
                 std::vector<int> destPos, 
-                std::vector<std::vector<std::shared_ptr<Piece>>>& board);
+                std::vector<std::vector<std::unique_ptr<Piece>>>& board);
 
         static bool canEnPassant();
 
@@ -52,7 +52,14 @@ class Helpers {
             return soln;
         }
 
-        static void movePiece(std::vector<int> start, std::vector<int> end, std::shared_ptr<Piece> p) {};
+        static void movePiece(std::vector<int> start, std::vector<int> end, std::unique_ptr<Piece> &p) {};
+
+        static std::pair<int, int> get_coords(int pos_x, int pos_y) {
+            // Due to the nature of the chess game in SFML we must flip these
+            int x = pos_y / 80; 
+            int y = pos_x / 80;
+            return {x, y};
+        }
 
 };
 

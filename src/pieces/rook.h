@@ -11,7 +11,7 @@ class Rook : public Piece {
         Rook(char c, std::vector<int>& v, sf::Texture t = {}) : 
             Piece(c, "Rook", v.at(0), v.at(1), t) {};
 
-        virtual bool validMove(std::vector<int>, std::vector<std::vector<std::shared_ptr<Piece>>>&) override;
+        virtual bool validMove(std::vector<int>, std::vector<std::vector<std::unique_ptr<Piece>>>&) override;
 };
 
 #endif

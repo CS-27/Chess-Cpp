@@ -4,7 +4,7 @@
 
 void Graphics::draw_window(sf::RenderWindow &window, Board &board) {
 
-    auto currBoard = board.getCurrBoard();
+    auto& currBoard = board.getCurrBoard();
     window.clear(sf::Color::White);
     // Create a rectangle shape for the squares
     sf::RectangleShape square(sf::Vector2f({80.f, 80.f}));
