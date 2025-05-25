@@ -21,59 +21,66 @@ int main() {
 
     Board board;
     std::vector<std::vector<std::unique_ptr<Piece>>>& currBoard = board.getCurrBoard();
-    char turn = 'w';
 
     // Create a window with a size of 640x640 pixels (8x8 board of 80x80)
     sf::RenderWindow window(sf::VideoMode({640, 640}), "Chessboard");
 
-    for (int i = 0; i<8; i++) {
-        for (int j = 0; j<8; j++) {
-            auto& tempPiece = currBoard[i][j];
-        }
-    }
-
     bool piecesDrawn = false;
-    Graphics::draw_window(window, board);
-    piecesDrawn = true;
+    bool pieceMoved = false;
+    std::vector<int> sourceCoords;
+    std::vector<int> destCoords;
+    char turn = 'w';
+    bool selected = false;
 
     // Loop until the window is closed
     while (window.isOpen()) {
+        while (!piecesDrawn) {
+            Graphics::draw_window(window, board);
+            std::cout << "drawing board";
+            piecesDrawn = true;
+        }
         // Provide handlers for concrete types and fall back to generic handler
         window.handleEvents(
             [&](const sf::Event::Closed&) { window.close(); },
             [&](const sf::Event::MouseButtonPressed& button) { 
+            
                 if (button.button == sf::Mouse::Button::Left){
                     auto [x, y] = Helpers::get_coords(button.position.x, button.position.y);
-                    auto& sourcePiece = currBoard.at(x).at(y);
-                    std::cout << sourcePiece->getColour() << sourcePiece->getName();
-                    std::cout << "Vector: (" << button.position.x << ", " << button.position.y << ")\n";
+                    auto& tempPiece = currBoard.at(x).at(y);
+                    tempPiece->printPiece();
 
+                    //  Piece has been selected, now choosing destination square/Piece
+                    if (!sourceCoords.empty() && selected == true && tempPiece->getColour() != turn) {
+                        destCoords = tempPiece->getCoords();
+                        std::cout << "destination selected ";
+                        tempPiece->printPiece();
+                    }
+
+                    //  Selecting Piece
+                    else if (tempPiece->getColour() == turn) {
+                        sourceCoords = tempPiece->getCoords();
+                        selected = true;
+                        std::cout << "selected Piece ";
+                        tempPiece->printPiece();
+                    }
+
+                    // Source and Dest squares have been selected
+                    if (!sourceCoords.empty() && !destCoords.empty()) {
+                        auto& sourcePiece = currBoard.at(sourceCoords.at(0)).at(sourceCoords.at(1));
+                        if (sourcePiece->validMove(destCoords, currBoard)) {
+                            auto& destPiece = currBoard.at(destCoords.at(0)).at(destCoords.at(1));
+                            destPiece = std::move(sourcePiece);
+                            currBoard.at(sourceCoords.at(0)).at(sourceCoords.at(1)) = std::make_unique<Empty>(sourceCoords);
+                            sourceCoords.clear();
+                            destCoords.clear();
+                            selected = false;
+                            std::cout << "swapped Piece, original square should be empty";
+                            piecesDrawn = false;
+                        }
+                    }
+                    
                 }
             }
         );
     }
 }
-
-
-
-    //board.printBoard(currBoard);
-    /*
-    while (true) {
-        std::vector<std::vector<int>> positions = Helpers::takeInput(turn);
-        std::vector<int> startPos = positions.at(0);
-        std::vector<int> endPos = positions.at(1);
-        //clear square for bishop valid move test
-        currBoard.at(1).at(1) = std::make_unique<Empty>(startPos);
-        board.printBoard(currBoard);
-        auto piece = currBoard.at(startPos.at(0)).at(startPos.at(1));
-        if (piece->validMove(endPos, currBoard)) {
-            std::cout << "true" << std::endl;
-            Helpers::movePiece(startPos, endPos, piece);
-        }
-        else {
-        }
-        //piece->setCoords(newCoords, currBoard);
-        board.printBoard(currBoard);
-        Helpers::toggleTurn(turn);
-    }
-    */

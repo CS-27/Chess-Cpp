@@ -30,5 +30,5 @@ bool Pawn::validMove(std::vector<int> v, std::vector<std::vector<std::unique_ptr
         //black: if row - 1, (col - 1 || col + 1) is opp colour piece
             //valid move
         
-        return false;
+        return true;
 }

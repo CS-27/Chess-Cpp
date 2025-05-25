@@ -30,7 +30,7 @@ void Graphics::draw_window(sf::RenderWindow &window, Board &board) {
     for(const auto& i : currBoard) {
         for(const auto& j : i) {
             window.draw(j->getSprite());
-            std::cout << "drawing pieces";
+            //std::cout << "drawing pieces";
         }
     }
     window.display();

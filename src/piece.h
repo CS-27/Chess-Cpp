@@ -54,7 +54,9 @@ class Piece {
 
         void setCoords(std::vector<int>, std::vector<std::vector<std::unique_ptr<Piece>>>&);
 
-        void printPiece();
+        void printPiece() {
+            std::cout << this->colour << this->name << ": (" << this->row << ", " << this->col << ")\n";
+        }
 
         virtual bool validMove(std::vector<int>, std::vector<std::vector<std::unique_ptr<Piece>>>&) = 0;
 
