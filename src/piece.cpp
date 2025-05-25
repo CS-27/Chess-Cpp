@@ -16,8 +16,3 @@ void Piece::setCoords(std::vector<int> destPos, std::vector<std::vector<std::uni
     // Place a new Empty piece in the original position
     board.at(currPos.at(0)).at(currPos.at(1)) = std::make_unique<Empty>(currPos);
 }
-
-
-void Piece::printPiece() {
-
-}
