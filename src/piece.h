@@ -19,7 +19,7 @@ class Piece {
     
     public:
         Piece(char c, std::string n, int rw, int cl, sf::Texture t = {}) : 
-            colour(c), name(n), row(rw), col(cl), tx(t), img(tx) {display();};
+            colour(c), name(n), row(rw), col(cl), tx(t), img(tx) {};
 
         const char& getColour() {
             return colour;
@@ -31,34 +31,24 @@ class Piece {
             return std::vector<int>{row, col};
         }
 
-        const sf::Sprite& getSprite() {
+        sf::Sprite& getSprite() {
             return img;
         }
 
-        void display() {
-
-            float desiredWidth = 80.f;
-            float desiredHeight = 80.f;
-
-            sf::Vector2u textureSize = tx.getSize();
-            float scaleX = desiredWidth / textureSize.x;
-            float scaleY = desiredHeight / textureSize.y;
-
-            img.setScale(sf::Vector2f(scaleX, scaleY));
-
-            float x = col * 80; //flipped due to board drawing logic
-            float y = row * 80; //same
-            img.setPosition(sf::Vector2f(x, y));
-
+        sf::Texture& getTexture() {
+            return tx;
         }
 
-        void setCoords(std::vector<int>, std::vector<std::vector<std::unique_ptr<Piece>>>&);
+        void setCoords(const std::vector<int>& newCoords) {
+            row = newCoords.at(0);
+            col = newCoords.at(1);
+        }
 
         void printPiece() {
             std::cout << this->colour << this->name << ": (" << this->row << ", " << this->col << ")\n";
         }
 
-        virtual bool validMove(std::vector<int>, std::vector<std::vector<std::unique_ptr<Piece>>>&) = 0;
+        virtual bool validMove(std::vector<int>, const std::vector<std::vector<std::unique_ptr<Piece>>>&) = 0;
 
         /*void print() {
             desc = 

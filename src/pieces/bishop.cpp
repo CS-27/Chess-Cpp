@@ -2,7 +2,7 @@
 #include <vector>
 #include <memory>
 
-bool Bishop::validMove(std::vector<int> v, std::vector<std::vector<std::unique_ptr<Piece>>>& board) {
+bool Bishop::validMove(std::vector<int> v, const std::vector<std::vector<std::unique_ptr<Piece>>>& board) {
 
     //get new and curr col/row and currcColour
     int newRow, newCol;

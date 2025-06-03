@@ -2,7 +2,7 @@
 #include <vector>
 #include <memory>
 
-bool Rook::validMove(std::vector<int> v, std::vector<std::vector<std::unique_ptr<Piece>>>& board) {
+bool Rook::validMove(std::vector<int> v, const std::vector<std::vector<std::unique_ptr<Piece>>>& board) {
     int newRow, newCol;
     newRow = v.at(0);
     newCol = v.at(1);
