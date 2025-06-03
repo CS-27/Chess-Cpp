@@ -3,7 +3,7 @@
 #include <memory>
 #include <cmath>
 
-bool Knight::validMove(std::vector<int> v, std::vector<std::vector<std::unique_ptr<Piece>>>& board) {
+bool Knight::validMove(std::vector<int> v, const std::vector<std::vector<std::unique_ptr<Piece>>>& board) {
 
     //get new and curr col/row and currcColour
     int newRow, newCol;

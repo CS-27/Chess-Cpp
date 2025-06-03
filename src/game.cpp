@@ -46,11 +46,11 @@ int main() {
             
                 if (button.button == sf::Mouse::Button::Left){
                     auto [x, y] = Helpers::get_coords(button.position.x, button.position.y);
-                    auto& tempPiece = currBoard.at(x).at(y);
+                    auto& tempPiece = board.getPiece(std::vector<int>{x,y});
                     tempPiece->printPiece();
 
                     //  Piece has been selected, now choosing destination square/Piece
-                    if (!sourceCoords.empty() && selected == true && tempPiece->getColour() != turn) {
+                    if (!sourceCoords.empty() && destCoords.empty() && selected == true && tempPiece->getColour() != turn) {
                         destCoords = tempPiece->getCoords();
                         std::cout << "destination selected ";
                         tempPiece->printPiece();
@@ -66,18 +66,15 @@ int main() {
 
                     // Source and Dest squares have been selected
                     if (!sourceCoords.empty() && !destCoords.empty()) {
-                        auto& sourcePiece = currBoard.at(sourceCoords.at(0)).at(sourceCoords.at(1));
-                        if (sourcePiece->validMove(destCoords, currBoard)) {
-                            auto& destPiece = currBoard.at(destCoords.at(0)).at(destCoords.at(1));
-                            destPiece = std::move(sourcePiece);
-                            currBoard.at(sourceCoords.at(0)).at(sourceCoords.at(1)) = std::make_unique<Empty>(sourceCoords);
-                            sourceCoords.clear();
-                            destCoords.clear();
-                            selected = false;
-                            std::cout << "swapped Piece, original square should be empty";
-                            piecesDrawn = false;
-                        }
+                        board.movePiece(sourceCoords, destCoords);
+                        Helpers::toggleTurn(turn);
+                        sourceCoords.clear();
+                        destCoords.clear();
+                        selected = false;
+                        std::cout << "swapped Piece, original square should be empty";
+                        piecesDrawn = false;
                     }
+
                     
                 }
             }

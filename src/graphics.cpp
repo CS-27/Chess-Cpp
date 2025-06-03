@@ -1,6 +1,9 @@
 #include "graphics.h"
 #include <SFML/Graphics.hpp>
 #include "board.h"
+#include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Sprite.hpp>
+#include "piece.h"
 
 void Graphics::draw_window(sf::RenderWindow &window, Board &board) {
 
@@ -26,12 +29,29 @@ void Graphics::draw_window(sf::RenderWindow &window, Board &board) {
             window.draw(square);
         }
     }
+
+    float desiredWidth = 80.f;
+    float desiredHeight = 80.f;
     
-    for(const auto& i : currBoard) {
-        for(const auto& j : i) {
-            window.draw(j->getSprite());
-            //std::cout << "drawing pieces";
+    for (int row = 0; row < 8; ++row) {
+        for (int col = 0; col < 8; ++col) {
+
+            auto& piece = currBoard.at(row).at(col);
+
+            sf::Vector2u textureSize = piece->getTexture().getSize();
+            float scaleX = desiredWidth / textureSize.x;
+            float scaleY = desiredHeight / textureSize.y;
+
+            auto& img = piece->getSprite();
+            img.setScale(sf::Vector2f(scaleX, scaleY));
+
+            float x = col * 80; //flipped due to board drawing logic
+            float y = row * 80; //same
+            img.setPosition(sf::Vector2f(x, y));
+
+            window.draw(img);
         }
     }
+
     window.display();
 };
