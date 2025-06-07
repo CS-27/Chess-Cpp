@@ -2,39 +2,32 @@
 #include <vector>
 #include <memory>
 #include <cmath>
+#include "../helpers.h"
 
 bool Knight::validMove(std::vector<int> v, const std::vector<std::vector<std::unique_ptr<Piece>>>& board) {
 
-    //get new and curr col/row and currcColour
-    int newRow, newCol;
-    newRow = v.at(0);
-    newCol = v.at(1);
-    std::vector<int> coords  = getCoords();
-    char currColour = getColour();
-    int currRow = coords.at(0);
-    int currCol = coords.at(1);
-    char oppColour = (currColour == 'b') ? 'w' : 'b';
+    Helpers::MoveContext m = getMoveContext(v);
 
     //check if out of bounds
-    if ((newRow < 0 || newRow > 7) || (newCol < 0 || newCol > 7)) {
+    if ((m.destRow < 0 || m.destRow > 7) || (m.destCol < 0 || m.destCol > 7)) {
         return false;
     }
 
     //check if valid knight move
-    if (std::abs(newRow - currRow) == 2) {
-        if (std::abs(newCol - currCol) != 1) {
+    if (std::abs(m.destRow - m.currRow) == 2) {
+        if (std::abs(m.destCol - m.currCol) != 1) {
             return false;
         }
     }
-    else if (std::abs(newRow - currRow) == 1) {
-        if (std::abs(newCol - currCol) != 2) {
+    else if (std::abs(m.destRow - m.currRow) == 1) {
+        if (std::abs(m.destCol - m.currCol) != 2) {
             return false;
         }
     }
     else {return false;}
 
     //check destination tile
-    auto& tempPiece = board.at(newRow).at(newCol);
-    return (tempPiece->getName() == "None" || tempPiece->getColour() == oppColour) ?  true : false;
+    auto& tempPiece = board.at(m.destRow).at(m.destCol);
+    return (tempPiece->getName() == "None" || tempPiece->getColour() == m.oppColour) ?  true : false;
 
 }
