@@ -125,7 +125,7 @@ void Board::printBoard(std::vector<std::vector<std::unique_ptr<Piece>>>& board) 
     }
 }
 
-void Board::movePiece(std::vector<int>& sourceCoords, std::vector<int>& destCoords) {
+bool Board::movePiece(std::vector<int>& sourceCoords, std::vector<int>& destCoords) {
 
     auto& sourcePiece = currBoard.at(sourceCoords.at(0)).at(sourceCoords.at(1));
 
@@ -135,5 +135,11 @@ void Board::movePiece(std::vector<int>& sourceCoords, std::vector<int>& destCoor
         destPiece = std::move(sourcePiece);
         destPiece->setCoords(destCoords);
         currBoard.at(sourceCoords.at(0)).at(sourceCoords.at(1)) = std::make_unique<Empty>(sourceCoords);
+        std::cout << "valid move";
+        return true;
+    }
+    else {
+        std::cout << "invalid move";
+        return false;
     }
 }

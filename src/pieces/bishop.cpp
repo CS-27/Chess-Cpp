@@ -1,83 +1,32 @@
 #include "bishop.h"
 #include <vector>
 #include <memory>
+#include "../helpers.h"
 
 bool Bishop::validMove(std::vector<int> v, const std::vector<std::vector<std::unique_ptr<Piece>>>& board) {
 
-    //get new and curr col/row and currcColour
-    int newRow, newCol;
-    newRow = v.at(0);
-    newCol = v.at(1);
-    std::vector<int> coords  = getCoords();
-    char currColour = getColour();
-    int currRow = coords.at(0);
-    int currCol = coords.at(1);
-    char oppColour = (currColour == 'b') ? 'w' : 'b';
+    Helpers::MoveContext m = getMoveContext(v);
 
-    //check if slope is 1
-    if (std::abs(newCol - currCol) != std::abs(newRow - currRow)) {
-        return false;
-    }
+    // out of bounds
+    if (m.destRow < 0 || m.destRow > 7 || m.destCol < 0 || m.destCol > 7) return false;
 
-    //check if out of bounds
-    if ((newRow < 0 || newRow > 7) || (newCol < 0 || newCol > 7)) {
-        return false;
-    }
+    // must move diagonally
+    if (std::abs(m.destRow - m.currRow) != std::abs(m.destCol - m.currCol)) return false;
 
-    //check if not a valid bishop move
-    if (newRow == currRow || newCol == currCol) {
+    // walk diagonally
+    int rowStep = (m.destRow > m.currRow) ? 1 : -1;
+    int colStep = (m.destCol > m.currCol) ? 1 : -1;
+
+    int r = m.currRow + rowStep;
+    int c = m.currCol + colStep;
+    while (r != m.destRow && c != m.destCol) {
+        if (board.at(r).at(c)->getName() != "None") {
             return false;
+        }
+        r += rowStep;
+        c += colStep;
     }
 
-    //check if diagonal path is clear
-    if (newRow < currRow) {
-        if (newCol < currCol) {
-            for (int i = currRow-1; i > newRow; i--) {
-                for (int j = currCol-1; j > newCol; j--) {
-                    auto& tempPiece = board.at(i).at(j);
-                    if (tempPiece->getName() != "None") {
-                        return false;
-                    }
-                }
-            }
-        }
-        else if (newCol > currCol) {
-            for (int i = currRow-1; i > newRow; i--) {
-                for (int j = currCol+1; j < newCol; j++) {
-                    auto& tempPiece = board.at(i).at(j);
-                    if (tempPiece->getName() != "None") {
-                        return false;
-                    }
-                }
-            }
-        }
-    }
-
-    else if (newRow > currRow) {
-        if (newCol < currCol) {
-            for (int i = currRow+1; i < newRow; i++) {
-                for (int j = currCol-1; j > newCol; j--) {
-                    auto& tempPiece = board.at(i).at(j);
-                    if (tempPiece->getName() != "None") {
-                        return false;
-                    }
-                }
-            }
-        }
-        else if (newCol > currCol) {
-            for (int i = currRow+1; i < newRow; i++) {
-                for (int j = currCol+1; j < newCol; j++) {
-                    auto& tempPiece = board.at(i).at(j);
-                    if (tempPiece->getName() != "None") {
-                        return false;
-                    }
-                }
-            }
-        }
-    }
-
-    //check destination tile
-    auto& tempPiece = board.at(newRow).at(newCol);
-    return (tempPiece->getName() == "None" || tempPiece->getColour() == oppColour) ?  true : false;
-    
-};
+    auto& dest = board.at(m.destRow).at(m.destCol);
+    return (dest->getName() == "None" || dest->getColour() == m.oppColour);
+}

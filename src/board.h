@@ -23,10 +23,14 @@ class Board {
 
         void printBoard(std::vector<std::vector<std::unique_ptr<Piece>>>&) const;
 
-        void movePiece(std::vector<int>& sourceCoords, std::vector<int>& destCoords);
+        bool movePiece(std::vector<int>& sourceCoords, std::vector<int>& destCoords);
 
         std::unique_ptr<Piece>& getPiece(std::vector<int> sourceCoords) {
             return currBoard.at(sourceCoords.at(0)).at(sourceCoords.at(1));
+        }
+
+        bool isEmpty(int row, int col) {
+            return (currBoard.at(row).at(col)->getName() == "None") ? true : false;
         }
         
 };

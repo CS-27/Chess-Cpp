@@ -34,7 +34,7 @@ int main() {
 
     // Loop until the window is closed
     while (window.isOpen()) {
-        while (!piecesDrawn) {
+        if (!piecesDrawn) {
             Graphics::draw_window(window, board);
             std::cout << "drawing board";
             piecesDrawn = true;
@@ -66,13 +66,14 @@ int main() {
 
                     // Source and Dest squares have been selected
                     if (!sourceCoords.empty() && !destCoords.empty()) {
-                        board.movePiece(sourceCoords, destCoords);
-                        Helpers::toggleTurn(turn);
-                        sourceCoords.clear();
-                        destCoords.clear();
-                        selected = false;
-                        std::cout << "swapped Piece, original square should be empty";
-                        piecesDrawn = false;
+                        if (board.movePiece(sourceCoords, destCoords)) {
+                            Helpers::toggleTurn(turn);
+                            std::cout << "swapped Piece, original square should be empty";
+                            piecesDrawn = false;
+                        }
+                            sourceCoords.clear();
+                            destCoords.clear();
+                            selected = false;
                     }
 
                     
