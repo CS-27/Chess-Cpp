@@ -14,7 +14,7 @@ bool Pawn::validMove(std::vector<int> v, const std::vector<std::vector<std::uniq
 
         //if pawn is in row 1 or row 6 then it can move 2 forward
             //presuming that the whole path is clear
-        int twoMoveRow = (getColour() == 'b') ? 1 : 6;
+        int twoMoveRow = (m.currColour == 'b') ? 1 : 6;
   
         if (m.currRow == twoMoveRow) {
             if (m.currColour == 'b') {

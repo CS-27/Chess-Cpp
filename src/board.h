@@ -32,6 +32,8 @@ class Board {
         bool isEmpty(int row, int col) {
             return (currBoard.at(row).at(col)->getName() == "None") ? true : false;
         }
+
+        bool KingIsInCheck(char);
         
 };
 

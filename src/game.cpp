@@ -71,9 +71,9 @@ int main() {
                             std::cout << "swapped Piece, original square should be empty";
                             piecesDrawn = false;
                         }
-                            sourceCoords.clear();
-                            destCoords.clear();
-                            selected = false;
+                        sourceCoords.clear();
+                        destCoords.clear();
+                        selected = false;
                     }
 
                     
