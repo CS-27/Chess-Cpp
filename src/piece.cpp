@@ -16,5 +16,6 @@
         m.destRow = destCoords.at(0);
         m.destCol = destCoords.at(1);
         m.currColour = getColour();
-        m.oppColour = (m.currCol == 'w') ? 'b' : 'w';
+        m.oppColour = (m.currColour == 'w') ? 'b' : 'w';
+        return m;
     }

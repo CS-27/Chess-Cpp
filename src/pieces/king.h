@@ -11,9 +11,8 @@ class King : public Piece {
         King(char c, std::vector<int>& v, sf::Texture t = {}) : 
             Piece(c, "King", v.at(0), v.at(1), t) {};
 
-        virtual bool validMove(std::vector<int>, const std::vector<std::vector<std::unique_ptr<Piece>>>&) override {
-            return false;
-        }
+        virtual bool validMove(std::vector<int>, const std::vector<std::vector<std::unique_ptr<Piece>>>&) override;
+
 };
 
 #endif // KING_H

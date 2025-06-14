@@ -15,9 +15,9 @@
 
 Board::Board() {
 
-    currBoard.resize(8);  // 8 rows
+    currBoard.resize(8);
     for (auto& row : currBoard) {
-        row.resize(8);    // 8 columns per row
+        row.resize(8);
     }
 
     for (int i = 0; i<8; i++) {
@@ -92,14 +92,6 @@ Board::Board() {
             }
         }
     }
-    /*for (int i = 0; i < currBoard.size(); i++) {
-        std::cout << "{";
-        for (int j = 0; j < currBoard.at(0).size(); j++) {
-        //std::cout << i << ", " << j << std::endl;
-        std::cout << currBoard.at(i).at(j)->getColour() << currBoard.at(i).at(j)->getName() << ", ";
-        }
-        std::cout << "}" << std::endl;
-    }*/
 }
 
 void Board::printBoard(std::vector<std::vector<std::unique_ptr<Piece>>>& board) const {
@@ -126,20 +118,67 @@ void Board::printBoard(std::vector<std::vector<std::unique_ptr<Piece>>>& board) 
 }
 
 bool Board::movePiece(std::vector<int>& sourceCoords, std::vector<int>& destCoords) {
+    auto& sourcePiece = currBoard[sourceCoords[0]][sourceCoords[1]];
 
-    auto& sourcePiece = currBoard.at(sourceCoords.at(0)).at(sourceCoords.at(1));
-
-    if (sourcePiece->validMove(destCoords, currBoard)) {
-
-        auto& destPiece = currBoard.at(destCoords.at(0)).at(destCoords.at(1));
-        destPiece = std::move(sourcePiece);
-        destPiece->setCoords(destCoords);
-        currBoard.at(sourceCoords.at(0)).at(sourceCoords.at(1)) = std::make_unique<Empty>(sourceCoords);
-        std::cout << "valid move";
-        return true;
-    }
-    else {
-        std::cout << "invalid move";
+    if (!sourcePiece->validMove(destCoords, currBoard)) {
+        std::cout << "invalid move\n";
         return false;
     }
+
+    // Backup pieces
+    auto backupSource = std::move(currBoard[sourceCoords[0]][sourceCoords[1]]);
+    auto backupDest = std::move(currBoard[destCoords[0]][destCoords[1]]);
+
+    // Simulate move
+    currBoard[destCoords[0]][destCoords[1]] = std::move(backupSource);
+    currBoard[destCoords[0]][destCoords[1]]->setCoords(destCoords);
+    currBoard[sourceCoords[0]][sourceCoords[1]] = std::make_unique<Empty>(sourceCoords);
+
+    // Check if own king is in check after move
+    if (KingIsInCheck(currBoard[destCoords[0]][destCoords[1]]->getColour())) {
+        // Revert the move
+        currBoard[sourceCoords[0]][sourceCoords[1]] = std::move(currBoard[destCoords[0]][destCoords[1]]);
+        currBoard[sourceCoords[0]][sourceCoords[1]]->setCoords(sourceCoords);
+        currBoard[destCoords[0]][destCoords[1]] = std::move(backupDest);
+
+        std::cout << "invalid move, king in check after move\n";
+        return false;
+    }
+
+    std::cout << "valid move\n";
+    return true;
+}
+
+bool Board::KingIsInCheck(char kingColour) {
+    int kingRow = -1, kingCol = -1;
+
+    // Find the king's position
+    for (int row = 0; row < 8; ++row) {
+        for (int col = 0; col < 8; ++col) {
+            auto& piece = currBoard[row][col];
+            if (piece && piece->getName() == "King" && piece->getColour() == kingColour) {
+                kingRow = row;
+                kingCol = col;
+                break;
+            }
+        }
+    }
+
+    if (kingRow == -1 || kingCol == -1) {
+        throw std::runtime_error("King not found on board");
+    }
+
+    // Check if any opponent piece can move to the king's position
+    for (int row = 0; row < 8; ++row) {
+        for (int col = 0; col < 8; ++col) {
+            auto& piece = currBoard[row][col];
+            if (piece && piece->getColour() != kingColour && piece->getColour() != '_') {
+                if (piece->validMove({kingRow, kingCol}, currBoard)) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
 }
