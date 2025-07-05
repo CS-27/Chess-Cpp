@@ -3,9 +3,12 @@
 #include <memory>
 #include <cmath>
 #include "../helpers.h"
+#include "../board.h"
 
-bool Knight::validMove(std::vector<int> v, const std::vector<std::vector<std::unique_ptr<Piece>>>& board) {
+bool Knight::validMove(std::vector<int> v, const Board& b) {
 
+    auto& board = b.getCurrBoard();
+    
     Helpers::MoveContext m = getMoveContext(v);
 
     //check if out of bounds

@@ -3,8 +3,11 @@
 #include <vector>
 #include <cmath>
 #include "../helpers.h"
+#include "../board.h"
 
-bool King::validMove(std::vector<int> v, const std::vector<std::vector<std::unique_ptr<Piece>>>& board) {
+bool King::validMove(std::vector<int> v, const Board& b) {
+
+    auto& board = b.getCurrBoard();
     
     Helpers::MoveContext m = getMoveContext(v);
 

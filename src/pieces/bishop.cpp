@@ -2,8 +2,11 @@
 #include <vector>
 #include <memory>
 #include "../helpers.h"
+#include "../board.h"
 
-bool Bishop::validMove(std::vector<int> v, const std::vector<std::vector<std::unique_ptr<Piece>>>& board) {
+bool Bishop::validMove(std::vector<int> v, const Board& b) {
+
+    auto& board = b.getCurrBoard();
 
     Helpers::MoveContext m = getMoveContext(v);
 

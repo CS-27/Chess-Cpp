@@ -15,11 +15,18 @@
 class Board {
     private:
         std::vector<std::vector<std::unique_ptr<Piece>>> currBoard;
+        
     public:
         Board();
-        std::vector<std::vector<std::unique_ptr<Piece>>>& getCurrBoard() {
+        const std::vector<std::vector<std::unique_ptr<Piece>>>& getCurrBoard() const {
             return currBoard;
         }
+
+        mutable bool enPassantAccepted = false;
+        mutable bool enPassantOppLast = false;
+        mutable bool enPassantOpp = false;
+        mutable std::vector<int> EnPassantTargetCoords;
+        mutable std::vector<int> EnPassantPieceToReplace;
 
         void printBoard(std::vector<std::vector<std::unique_ptr<Piece>>>&) const;
 
@@ -34,6 +41,23 @@ class Board {
         }
 
         bool KingIsInCheck(char);
+
+        void checkEnPassant(std::vector<int>, std::vector<int>);
+
+        bool isEnPassantCapture(const std::vector<int>& sourceCoords, const std::vector<int>& destCoords) const {
+            auto& piece = currBoard[sourceCoords[0]][sourceCoords[1]];
+            if (!piece || piece->getName() != "Pawn") return false;
+            
+            return ((destCoords == EnPassantTargetCoords) && enPassantOppLast);
+        }
+
+        void ResetEnPassantVars() {
+            EnPassantPieceToReplace.clear();
+            EnPassantTargetCoords.clear();
+            enPassantOpp = false;
+            enPassantOppLast = false;
+            enPassantAccepted = false;
+        }
         
 };
 

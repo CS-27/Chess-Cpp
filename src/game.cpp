@@ -20,7 +20,7 @@
 int main() {
 
     Board board;
-    std::vector<std::vector<std::unique_ptr<Piece>>>& currBoard = board.getCurrBoard();
+    const std::vector<std::vector<std::unique_ptr<Piece>>>& currBoard = board.getCurrBoard();
 
     // Create a window with a size of 640x640 pixels (8x8 board of 80x80)
     sf::RenderWindow window(sf::VideoMode({640, 640}), "Chessboard");
@@ -31,6 +31,12 @@ int main() {
     std::vector<int> destCoords;
     char turn = 'w';
     bool selected = false;
+
+    bool enPassantAcceptedgame = false;
+    bool enPassantOppgame = false;
+    bool enPassantOppLastgame = false;
+    std::vector<int> EnPassantTargetCoordsgame;
+    std::vector<int> EnPassantPieceToReplacegame;
 
     // Loop until the window is closed
     while (window.isOpen()) {
@@ -64,19 +70,39 @@ int main() {
                         tempPiece->printPiece();
                     }
 
+                    // this is gameSetEnPassantVars();
+                    enPassantAcceptedgame = board.enPassantAccepted;
+                    enPassantOppgame = board.enPassantOpp;
+                    enPassantOppLastgame = board.enPassantOppLast;
+                    EnPassantTargetCoordsgame = board.EnPassantTargetCoords;
+                    EnPassantPieceToReplacegame = board.EnPassantPieceToReplace;
+
                     // Source and Dest squares have been selected
                     if (!sourceCoords.empty() && !destCoords.empty()) {
+
+                        auto& sourcePiece = currBoard.at(sourceCoords.at(0)).at(sourceCoords.at(1));
+
+                        board.checkEnPassant(sourceCoords, destCoords);
                         if (board.movePiece(sourceCoords, destCoords)) {
+
+                            board.enPassantOppLast = board.enPassantOpp;
+
                             Helpers::toggleTurn(turn);
                             std::cout << "swapped Piece, original square should be empty";
                             piecesDrawn = false;
                         }
+                        else {
+                            board.enPassantAccepted = enPassantAcceptedgame;
+                            board.enPassantOpp = enPassantOppgame;
+                            board.EnPassantTargetCoords = EnPassantTargetCoordsgame;
+                            board.EnPassantPieceToReplace = EnPassantPieceToReplacegame;
+                            board.enPassantOppLast = enPassantOppLastgame;
+                        }
+
                         sourceCoords.clear();
                         destCoords.clear();
                         selected = false;
                     }
-
-                    
                 }
             }
         );

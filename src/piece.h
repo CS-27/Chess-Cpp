@@ -56,7 +56,7 @@ class Piece {
             std::cout << this->colour << this->name << ": (" << this->row << ", " << this->col << ")\n";
         }
 
-        virtual bool validMove(std::vector<int>, const std::vector<std::vector<std::unique_ptr<Piece>>>&) = 0;
+        virtual bool validMove(std::vector<int>, const Board&) = 0;
 
 };
 

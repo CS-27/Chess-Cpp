@@ -120,9 +120,21 @@ void Board::printBoard(std::vector<std::vector<std::unique_ptr<Piece>>>& board) 
 bool Board::movePiece(std::vector<int>& sourceCoords, std::vector<int>& destCoords) {
     auto& sourcePiece = currBoard[sourceCoords[0]][sourceCoords[1]];
 
-    if (!sourcePiece->validMove(destCoords, currBoard)) {
+
+    if (!sourcePiece->validMove(destCoords, *this)) {
         std::cout << "invalid move\n";
         return false;
+    }
+
+    bool isEP = isEnPassantCapture(sourceCoords, destCoords);
+    if (isEP) {
+        // Remove the captured pawn behind the destination
+        currBoard[EnPassantPieceToReplace.at(0)][EnPassantPieceToReplace.at(1)] = std::make_unique<Empty>(EnPassantPieceToReplace);
+        std::cout << "En passant capture executed\n";
+    }
+
+    if (!enPassantOpp) {
+        ResetEnPassantVars();
     }
 
     // Backup pieces
@@ -173,7 +185,7 @@ bool Board::KingIsInCheck(char kingColour) {
         for (int col = 0; col < 8; ++col) {
             auto& piece = currBoard[row][col];
             if (piece && piece->getColour() != kingColour && piece->getColour() != '_') {
-                if (piece->validMove({kingRow, kingCol}, currBoard)) {
+                if (piece->validMove({kingRow, kingCol}, *this)) {
                     return true;
                 }
             }
@@ -181,4 +193,18 @@ bool Board::KingIsInCheck(char kingColour) {
     }
 
     return false;
+}
+
+void Board::checkEnPassant(std::vector<int> source, std::vector<int> dest) {
+    auto& sourcePiece = currBoard.at(source.at(0)).at(source.at(1));
+    if (sourcePiece->getName() == "Pawn") {
+        int enPassantCol = (sourcePiece->getColour() == 'w') ? 6 : 1;
+        if ((std::abs(dest.at(0) - source.at(0)) == 2) && source.at(0) == enPassantCol) {
+            enPassantOpp = true;
+            EnPassantPieceToReplace = dest;
+            EnPassantTargetCoords = std::vector<int>{(sourcePiece->getColour() == 'w') ? 5 : 2, dest.at(1)};
+            return;
+        }
+    }
+    enPassantOpp = false;
 }
