@@ -10,7 +10,7 @@
 
 class Queen : public Piece {
     public:
-        Queen(char c, std::vector<int>& v, sf::Texture t = {}) : 
+        Queen(char c, const std::vector<int>& v, sf::Texture t = {}) : 
             Piece(c, "Queen", v.at(0), v.at(1), t) {};
 
         virtual bool validMove(std::vector<int> v, const Board& b) override {

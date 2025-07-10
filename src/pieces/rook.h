@@ -8,7 +8,7 @@
 
 class Rook : public Piece {
     public:
-        Rook(char c, std::vector<int>& v, sf::Texture t = {}) : 
+        Rook(char c, const std::vector<int>& v, sf::Texture t = {}) : 
             Piece(c, "Rook", v.at(0), v.at(1), t) {};
 
         virtual bool validMove(std::vector<int>, const Board& b) override;

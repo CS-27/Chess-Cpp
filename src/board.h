@@ -18,6 +18,7 @@ class Board {
         
     public:
         Board();
+
         const std::vector<std::vector<std::unique_ptr<Piece>>>& getCurrBoard() const {
             return currBoard;
         }
@@ -30,7 +31,7 @@ class Board {
 
         void printBoard(std::vector<std::vector<std::unique_ptr<Piece>>>&) const;
 
-        bool movePiece(std::vector<int>& sourceCoords, std::vector<int>& destCoords);
+        bool movePiece(const std::vector<int>& sourceCoords, const std::vector<int>& destCoords);
 
         std::unique_ptr<Piece>& getPiece(std::vector<int> sourceCoords) {
             return currBoard.at(sourceCoords.at(0)).at(sourceCoords.at(1));
@@ -57,6 +58,11 @@ class Board {
             enPassantOpp = false;
             enPassantOppLast = false;
             enPassantAccepted = false;
+        }
+
+        // Only used for tests
+        void setPiece(std::unique_ptr<Piece> p) {
+            currBoard[p->getCoords().at(0)][p->getCoords().at(1)] = std::move(p);
         }
         
 };

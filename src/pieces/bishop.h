@@ -8,7 +8,7 @@
 
 class Bishop : public Piece {
     public:
-        Bishop(char c, std::vector<int>& v, sf::Texture t = {}) : 
+        Bishop(char c, const std::vector<int>& v, sf::Texture t = {}) : 
             Piece(c, "Bishop", v.at(0), v.at(1), t) {};
 
             virtual bool validMove(std::vector<int>, const Board& b) override;

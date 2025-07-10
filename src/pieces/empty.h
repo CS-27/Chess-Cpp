@@ -7,7 +7,7 @@
 
 class Empty : public Piece {
     public:
-        Empty(std::vector<int>& v) : 
+        Empty(const std::vector<int>& v) : 
             Piece('_', "None", v.at(0), v.at(1)) {};
 
         virtual bool validMove(std::vector<int>, const Board& b) override {

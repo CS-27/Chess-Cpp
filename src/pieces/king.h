@@ -8,7 +8,7 @@
 
 class King : public Piece {
     public:
-        King(char c, std::vector<int>& v, sf::Texture t = {}) : 
+        King(char c, const std::vector<int>& v, sf::Texture t = {}) : 
             Piece(c, "King", v.at(0), v.at(1), t) {};
 
         virtual bool validMove(std::vector<int>, const Board& b) override;

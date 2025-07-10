@@ -42,7 +42,7 @@ int main() {
     while (window.isOpen()) {
         if (!piecesDrawn) {
             Graphics::draw_window(window, board);
-            std::cout << "drawing board";
+            std::cout << "drawing board" << std::endl;
             piecesDrawn = true;
         }
         // Provide handlers for concrete types and fall back to generic handler
@@ -56,9 +56,9 @@ int main() {
                     tempPiece->printPiece();
 
                     //  Piece has been selected, now choosing destination square/Piece
-                    if (!sourceCoords.empty() && destCoords.empty() && selected == true && tempPiece->getColour() != turn) {
+                    if (!sourceCoords.empty() && destCoords.empty() && selected && tempPiece->getColour() != turn) {
                         destCoords = tempPiece->getCoords();
-                        std::cout << "destination selected ";
+                        std::cout << "destination selected " << std::endl;
                         tempPiece->printPiece();
                     }
 
@@ -66,7 +66,7 @@ int main() {
                     else if (tempPiece->getColour() == turn) {
                         sourceCoords = tempPiece->getCoords();
                         selected = true;
-                        std::cout << "selected Piece ";
+                        std::cout << "selected Piece " << std::endl;
                         tempPiece->printPiece();
                     }
 
@@ -88,7 +88,7 @@ int main() {
                             board.enPassantOppLast = board.enPassantOpp;
 
                             Helpers::toggleTurn(turn);
-                            std::cout << "swapped Piece, original square should be empty";
+                            std::cout << "swapped Piece, original square should be empty" << std::endl;
                             piecesDrawn = false;
                         }
                         else {

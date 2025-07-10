@@ -117,24 +117,22 @@ void Board::printBoard(std::vector<std::vector<std::unique_ptr<Piece>>>& board) 
     }
 }
 
-bool Board::movePiece(std::vector<int>& sourceCoords, std::vector<int>& destCoords) {
+bool Board::movePiece(const std::vector<int>& sourceCoords, const std::vector<int>& destCoords) {
     auto& sourcePiece = currBoard[sourceCoords[0]][sourceCoords[1]];
 
 
     if (!sourcePiece->validMove(destCoords, *this)) {
         std::cout << "invalid move\n";
         return false;
-    }
+    }  
 
+    std::unique_ptr<Piece> EnPassantBackup;
     bool isEP = isEnPassantCapture(sourceCoords, destCoords);
     if (isEP) {
         // Remove the captured pawn behind the destination
+        EnPassantBackup = std::move(currBoard[EnPassantPieceToReplace.at(0)][EnPassantPieceToReplace.at(1)]);
         currBoard[EnPassantPieceToReplace.at(0)][EnPassantPieceToReplace.at(1)] = std::make_unique<Empty>(EnPassantPieceToReplace);
         std::cout << "En passant capture executed\n";
-    }
-
-    if (!enPassantOpp) {
-        ResetEnPassantVars();
     }
 
     // Backup pieces
@@ -152,9 +150,17 @@ bool Board::movePiece(std::vector<int>& sourceCoords, std::vector<int>& destCoor
         currBoard[sourceCoords[0]][sourceCoords[1]] = std::move(currBoard[destCoords[0]][destCoords[1]]);
         currBoard[sourceCoords[0]][sourceCoords[1]]->setCoords(sourceCoords);
         currBoard[destCoords[0]][destCoords[1]] = std::move(backupDest);
+        
+        if (isEP) {
+            currBoard[EnPassantPieceToReplace.at(0)][EnPassantPieceToReplace.at(1)] = std::move(EnPassantBackup);
+        }
 
         std::cout << "invalid move, king in check after move\n";
         return false;
+    }
+
+    if (!enPassantOpp) {
+        ResetEnPassantVars();
     }
 
     std::cout << "valid move\n";

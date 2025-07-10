@@ -9,7 +9,7 @@
 class Pawn : public Piece {
 
     public:
-        Pawn(char c, std::vector<int>& v, sf::Texture t = {}) : 
+        Pawn(char c, const std::vector<int>& v, sf::Texture t = {}) : 
             Piece(c, "Pawn", v.at(0), v.at(1), t) {};
 
         virtual bool validMove(std::vector<int>, const Board& b) override;
