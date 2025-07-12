@@ -23,14 +23,14 @@ bool Pawn::validMove(std::vector<int> v, const Board& b) {
 
     if (m.currRow == twoMoveRow) {
         if (m.currColour == 'b') {
-            if (m.destRow - m.currRow == 2) {
+            if ((m.destRow - m.currRow == 2) && (m.currCol == m.destCol)) {
                 if ((board.at(m.destRow-1).at(m.destCol)->getName() == "None") && (board.at(m.destRow).at(m.destCol)->getName() == "None")) {
                     return true;
                 }
             }
         }
         else {
-            if (m.currRow - m.destRow == 2) {
+            if ((m.currRow - m.destRow == 2) && (m.currCol == m.destCol)) {
                 if ((board.at(m.destRow+1).at(m.destCol)->getName() == "None") && (board.at(m.destRow).at(m.destCol)->getName() == "None")) {
                     return true;
                 }

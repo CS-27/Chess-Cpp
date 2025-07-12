@@ -29,6 +29,37 @@ bool King::validMove(std::vector<int> v, const Board& b) {
         return true;
     }
 
+    
+    // Castle Logic
+    if (v == b.castle.bKingCastleLongDest && b.castle.bCastleLong && m.currColour == 'b') {
+        b.castle.castleOpp = true;
+        b.castle.moveThroughCoords.emplace_back(std::vector<int>{0,4});
+        b.castle.moveThroughCoords.emplace_back(std::vector<int>{0,3});
+        b.castle.moveThroughCoords.emplace_back(std::vector<int>{0,2});
+        return true;
+    }
+    else if (v == b.castle.bKingCastleShortDest && b.castle.bCastleShort && m.currColour == 'b') {
+        b.castle.castleOpp = true;
+        b.castle.moveThroughCoords.emplace_back(std::vector<int>{0,4});
+        b.castle.moveThroughCoords.emplace_back(std::vector<int>{0,5});
+        b.castle.moveThroughCoords.emplace_back(std::vector<int>{0,6});
+        return true;
+    }
+    else if (v == b.castle.wKingCastleLongDest && b.castle.wCastleLong && m.currColour == 'w') {
+        b.castle.castleOpp = true;
+        b.castle.moveThroughCoords.emplace_back(std::vector<int>{7,4});
+        b.castle.moveThroughCoords.emplace_back(std::vector<int>{7,3});
+        b.castle.moveThroughCoords.emplace_back(std::vector<int>{7,2});
+        return true;
+    }
+    else if (v == b.castle.wKingCastleShortDest && b.castle.wCastleShort && m.currColour == 'w') {
+        b.castle.castleOpp = true;
+        b.castle.moveThroughCoords.emplace_back(std::vector<int>{7,4});
+        b.castle.moveThroughCoords.emplace_back(std::vector<int>{7,5});
+        b.castle.moveThroughCoords.emplace_back(std::vector<int>{7,6});
+        return true;
+    }
+
     return false;
 
 }

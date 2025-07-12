@@ -119,12 +119,40 @@ void Board::printBoard(std::vector<std::vector<std::unique_ptr<Piece>>>& board) 
 
 bool Board::movePiece(const std::vector<int>& sourceCoords, const std::vector<int>& destCoords) {
     auto& sourcePiece = currBoard[sourceCoords[0]][sourceCoords[1]];
-
+    auto& sourceName = sourcePiece->getName();
+    auto sourceColour = sourcePiece->getColour();
 
     if (!sourcePiece->validMove(destCoords, *this)) {
         std::cout << "invalid move\n";
         return false;
     }  
+
+    if (castle.castleOpp) {
+        if (!castlePathClear((sourceColour == 'b') ? 'w' : 'b')) {
+            castle.castleOpp = false;
+            castle.moveThroughCoords.clear();
+            if (destCoords.at(1) == 2 && sourceColour == 'b') {
+                castle.bCastleLong = true;
+            }
+            if (destCoords.at(1) == 2 && sourceColour == 'w') {
+                castle.wCastleLong = true;
+            }
+            if (destCoords.at(1) == 6 && sourceColour == 'b') {
+                castle.bCastleShort = true;
+            }
+            if (destCoords.at(1) == 6 && sourceColour == 'w') {
+                castle.wCastleShort = true;
+            }
+            std::cout << "invalid move, king's castle path is not clear\n";
+            return false;
+        }
+        else {
+            castleMoveRook(destCoords);
+            castle.castleOpp = false;
+            castle.moveThroughCoords.clear();
+        }
+    }
+
 
     std::unique_ptr<Piece> EnPassantBackup;
     bool isEP = isEnPassantCapture(sourceCoords, destCoords);
@@ -145,7 +173,7 @@ bool Board::movePiece(const std::vector<int>& sourceCoords, const std::vector<in
     currBoard[sourceCoords[0]][sourceCoords[1]] = std::make_unique<Empty>(sourceCoords);
 
     // Check if own king is in check after move
-    if (KingIsInCheck(currBoard[destCoords[0]][destCoords[1]]->getColour())) {
+    if (!castle.castleOpp && KingIsInCheck(currBoard[destCoords[0]][destCoords[1]]->getColour())) {
         // Revert the move
         currBoard[sourceCoords[0]][sourceCoords[1]] = std::move(currBoard[destCoords[0]][destCoords[1]]);
         currBoard[sourceCoords[0]][sourceCoords[1]]->setCoords(sourceCoords);
@@ -162,6 +190,8 @@ bool Board::movePiece(const std::vector<int>& sourceCoords, const std::vector<in
     if (!enPassantOpp) {
         ResetEnPassantVars();
     }
+
+    updateCastleVars(sourceName, sourceColour, sourceCoords[1]);
 
     std::cout << "valid move\n";
     return true;
@@ -213,4 +243,44 @@ void Board::checkEnPassant(std::vector<int> source, std::vector<int> dest) {
         }
     }
     enPassantOpp = false;
+}
+
+bool Board::castlePathClear(char enemyColour) {
+
+    // Check if any opponent piece can move to the king's position
+    for (int row = 0; row < 8; ++row) {
+        for (int col = 0; col < 8; ++col) {
+            auto& piece = currBoard[row][col];
+            if (piece && piece->getColour() == enemyColour) {
+                for (const auto& v : castle.moveThroughCoords) {
+                    if (!(currBoard.at(v.at(0)).at(v.at(1))->getName() == "None")
+                        && !(currBoard.at(v.at(0)).at(v.at(1))->getName() == "King" && 
+                        currBoard.at(v.at(0)).at(v.at(1))->getColour() != enemyColour)) {
+                        return false;
+                    }
+                    if (piece->validMove({v.at(0), v.at(1)}, *this)) {
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+
+    return true;
+}
+
+void Board::castleMoveRook(const std::vector<int>& dest) {
+    int rookDestCol, rookSourceCol;
+    if (dest.at(1) == 2) {
+        rookDestCol = 3;
+        rookSourceCol = 0;
+    }
+    else if (dest.at(1) == 6) {
+        rookDestCol = 5;
+        rookSourceCol = 7;
+    }
+    currBoard.at(dest.at(0)).at(rookDestCol) = std::move(currBoard.at(dest.at(0)).at(rookSourceCol));
+    currBoard.at(dest.at(0)).at(rookDestCol)->setCoords(std::vector<int>{dest.at(0),rookDestCol});
+    auto tempvec = std::vector<int>{dest.at(0), rookSourceCol};
+    currBoard.at(dest.at(0)).at(rookSourceCol) = std::make_unique<Empty>(tempvec);
 }

@@ -10,12 +10,14 @@
 #include "pieces/pawn.h"
 #include <vector>
 #include <memory>
+#include <string>
+
 
 
 class Board {
     private:
         std::vector<std::vector<std::unique_ptr<Piece>>> currBoard;
-        
+
     public:
         Board();
 
@@ -64,6 +66,45 @@ class Board {
         void setPiece(std::unique_ptr<Piece> p) {
             currBoard[p->getCoords().at(0)][p->getCoords().at(1)] = std::move(p);
         }
+
+        struct castleVars {
+            mutable bool wCastleLong = true;
+            mutable bool wCastleShort = true;
+            mutable bool bCastleLong = true;
+            mutable bool bCastleShort = true;
+            const std::vector<int> bKingCastleLongDest = {0,2};
+            const std::vector<int> bKingCastleShortDest = {0,6};
+            const std::vector<int> wKingCastleLongDest = {7,2};
+            const std::vector<int> wKingCastleShortDest = {7,6};
+            mutable std::vector<std::vector<int>> moveThroughCoords = {};
+            mutable bool castleOpp = false;
+
+        };
+        castleVars castle;
+
+        void updateCastleVars(const std::string& name, char colour, int column) {
+            if ((name == "Rook") && (colour == 'w') && (column == 0) && (castle.wCastleLong)) {
+                    castle.wCastleLong = false;
+            } 
+            else if ((name == "Rook") && (colour == 'w') && (column == 7) && (castle.wCastleShort)) {
+                castle.wCastleShort = false;
+            }
+            else if ((name == "Rook") && (colour == 'b') && (column == 0) && (castle.bCastleLong)) {
+                castle.bCastleLong = false;
+            }
+            else if ((name == "Rook") && (colour == 'b') && (column == 7) && (castle.bCastleShort)) {
+                castle.bCastleShort = false;
+            }
+            else if ((name == "King") && (colour == 'w')) {
+                castle.wCastleLong = castle.wCastleShort = false;
+            }
+            else if ((name == "King") && (colour == 'b')) {
+                castle.bCastleLong = castle.bCastleShort = false;
+            }
+        }
+
+        bool castlePathClear(char);
+        void castleMoveRook(const std::vector<int>&);
         
 };
 
