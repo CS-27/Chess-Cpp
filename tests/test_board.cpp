@@ -18,10 +18,15 @@ TEST_CASE("En Passant") {
         // Set black pawn will try to move from {1,3} to {3,3}
         board.checkEnPassant(std::vector{1,3}, std::vector{3,3});
         REQUIRE(board.movePiece(std::vector{1,3}, std::vector{3,3}));
+        board.enPassantOppLast = board.enPassantOpp;
         REQUIRE(board.movePiece(std::vector{3,4}, std::vector{2,3}));
 
         // Check that captured square is empty
         auto& captured = board.getPiece({3, 3});
         REQUIRE(captured->getName() == "None");
+    }
+
+    SECTION("Invalid EP") {
+        
     }
 }
