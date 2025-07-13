@@ -172,7 +172,7 @@ bool Board::movePiece(const std::vector<int>& sourceCoords, const std::vector<in
     currBoard[destCoords[0]][destCoords[1]]->setCoords(destCoords);
     currBoard[sourceCoords[0]][sourceCoords[1]] = std::make_unique<Empty>(sourceCoords);
 
-    // Check if own king is in check after move
+    // Check if own king is in check after move, castle Opp func will already check if king is in check so skip that
     if (!castle.castleOpp && KingIsInCheck(currBoard[destCoords[0]][destCoords[1]]->getColour())) {
         // Revert the move
         currBoard[sourceCoords[0]][sourceCoords[1]] = std::move(currBoard[destCoords[0]][destCoords[1]]);
