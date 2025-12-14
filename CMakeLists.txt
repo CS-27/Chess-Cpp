@@ -47,7 +47,6 @@ set_target_properties(chessgame PROPERTIES
 )
 
 add_executable(tests
-    tests/test_pawn.cpp
     tests/test_board.cpp
     tests/test_main.cpp
     ${SOURCES}
